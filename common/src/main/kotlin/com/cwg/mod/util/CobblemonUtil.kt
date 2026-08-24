@@ -104,7 +104,7 @@ object CobblemonUtil {
 
         requirements.forEach { requirement ->
             when (requirement) {
-                is BiomeRequirement -> { 
+                is BiomeRequirement -> {
                     requirement.biomeCondition?.let { biome ->
                         var biomeCondition : ResourceLocation? = null
                         if(biome is BiomeTagCondition) biomeCondition = biome.tag.location
@@ -575,13 +575,41 @@ object CobblemonUtil {
         return payload
     }
 
-    fun getAbilities(species: FormData): MutableList<Component> {
-        val payload: MutableSet<Component> = mutableSetOf()
-        species.abilities.forEach {
-            payload.add(it.template.displayName.yellow())
+    private const val ABILITY_DESC_WRAP_WIDTH = 40
+
+    private fun wrapText(text: String, width: Int): List<String> {
+        if (text.isBlank()) return emptyList()
+        val wrapped = mutableListOf<String>()
+        val line = StringBuilder()
+        for (word in text.split(" ")) {
+            if (line.isNotEmpty() && line.length + word.length + 1 > width) {
+                wrapped.add(line.toString())
+                line.setLength(0)
+            }
+            if (line.isNotEmpty()) line.append(" ")
+            line.append(word)
         }
-        return payload.toMutableList()
+        if (line.isNotEmpty()) wrapped.add(line.toString())
+        return wrapped
     }
+
+    fun getAbilities(species: FormData): MutableList<Component> {
+        val payload: MutableList<Component> = ArrayList()
+        val seen: MutableSet<String> = mutableSetOf()
+        species.abilities.forEach {
+            val abilityName = it.template.name
+            if (!seen.add(abilityName)) return@forEach
+
+            payload.add(it.template.displayName.yellow())
+
+            val descriptionText = Component.translatable("cobblemon.ability.$abilityName.desc").string
+            wrapText(descriptionText, ABILITY_DESC_WRAP_WIDTH).forEach { line ->
+                payload.add(line.text().gray())
+            }
+        }
+        return payload
+    }
+
 
     fun getEVYield(species: FormData): MutableList<Component> {
         val lore: MutableList<Component> = ArrayList()
