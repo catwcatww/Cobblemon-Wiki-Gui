@@ -54,13 +54,30 @@ Aliases: `/pokewiki`, `/pokemonwiki`, `/cobblemonwiki`, `/cobblewiki`, `/cwiki`
 
 Aliases: `/pokewikiother`, `/pokemonwikiother`, `/cobblemonwikiother`, `/cobblewikiother`, `/cwikiother`
 
+**PWikiDex** — Opens a paginated browser of every implemented Pokémon species, so players can jump into the wiki without already knowing a species' name. Off by default (see permission) since it lists everything regardless of what the player has encountered.
+
+| Permission | Command | Description |
+|------------|---------|--------------|
+| <code>cobblemon_wiki_gui.command.pwikidex</code> | <code>/pwikidex</code> | Opens the species browser. |
+
 **Reload** — Reloads the configuration files in-game.
 
 | Permission | Command | Description |
 |------------|---------|--------------|
 | <code>cobblemon_wiki_gui.command.cwgreload</code> | <code>/cwg reload</code> | Reloads the lang.json configuration file without restarting. |
 
-### Default Configuration File
+### Default Configuration Files
+The main.json file, located under config/cobblemon_wiki_gui, contains general mod settings:
+```json
+{
+  "version": "1.0.0",
+  "fillerItem": "minecraft:red_stained_glass_pane",
+  "showGithubIssuesButton": true
+}
+```
+- `fillerItem` — item id used as the border/filler in every wiki GUI. Set to `""` or `"none"` to disable filler entirely (empty slots stay empty). Falls back to `minecraft:red_stained_glass_pane` if the id is invalid or unknown.
+- `showGithubIssuesButton` — shows a "Report an Issue" button (opens the GitHub issues page) in a corner slot of the Wiki and Pokedex screens. Set to `false` to remove it and keep that slot as plain filler.
+
 The lang.json file, located under config/cobblemon_wiki_gui, contains the following default settings:
 ```json
 {
@@ -114,7 +131,12 @@ The lang.json file, located under config/cobblemon_wiki_gui, contains the follow
   "resistant": "Resistant against:",
   "immune": "Immune against:",
   "pokeInfo": "Click to get more info",
-  "noDrops": "No Drops"
+  "noDrops": "No Drops",
+  "pokeWikiTitle": "Cobblemon Wiki",
+  "pokeWikiTitleWithForm": "Cobblemon Wiki - %species% (%form%)",
+  "githubIssuesButtonName": "Report an Issue",
+  "githubIssuesButtonLore": "Click to get a link to report bugs or suggestions on GitHub",
+  "githubIssuesLinkText": "Click here to open the GitHub issues page"
 }
 ```
 
