@@ -16,8 +16,7 @@ rootProject.name = "cobblemon_wiki_gui"
 
 listOf(
 	"common",
-	"fabric",
-	"neoforge"
+	"fabric"
 ).forEach { setupProject(it, file(it)) }
 
 fun setupProject(name: String, projectDirectory: File) = setupProject(name) {
